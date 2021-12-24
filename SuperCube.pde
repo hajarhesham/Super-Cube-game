@@ -20,9 +20,9 @@ final static float GROUND_LEVEL = HEIGHT - SPRITE_SIZE;
 int CURRENT_SCREEN = 0;
 
 Player p;
-PImage Grass, crate, brown_brick, Background, gold, spider, pl, startScreenBG;
+PImage grass, crate, brown_brick, background, gold, mace, pl, startScreenBG;
 PImage[] levelButtonsImgs,levelButtonsHoverImgs, resetButtonsImgs, homeButtonsImgs, instructionButtonImgs, heartImgs;
-PImage nextLevelButtonImg, coinCounter;
+PImage nextLevelButtonImg, coinCounter, logo;
 
 
 Button[] levelButtons, resetButtons, homeButtons;
@@ -45,7 +45,6 @@ void setup() {
     imageMode(CENTER);
     //p = new Sprite("player.png",SPRITE_SCALE,100,200);
     pl = loadImage("player.png");
-    Background = loadImage("Background.png");
     startScreenBG = loadImage("StartScreen_bg.png");
     p = new Player(pl, 0.6);
     p.setBottom(GROUND_LEVEL);
@@ -63,13 +62,31 @@ void setup() {
 
 
     gold = loadImage("gold1.png");
-    spider = loadImage("Mace.png");
+    mace = loadImage("Mace.png");
     brown_brick = loadImage("brown_brick.png");
     crate = loadImage("crate.png");
-    Grass = loadImage("Grass.png");
-    createPlatforms("map.csv");
     
+    if(CURRENT_SCREEN == 1)
+    {
+      background = loadImage("background1.png");
+      grass = loadImage("grass1.png");
+      createPlatforms("map1.csv");
+    }
+    else if(CURRENT_SCREEN == 2)
+    {
+      background = loadImage("background2.png");
+      grass = loadImage("grass2.png");
+      createPlatforms("map2.csv");
+    }
+    else if(CURRENT_SCREEN == 3)
+    {
+      background = loadImage("background3.png");
+      grass = loadImage("grass3.png");
+      createPlatforms("map3.csv");
+    }
     
+    //logo
+     logo = loadImage("logo.png");
     
     //buttons
     
@@ -110,9 +127,9 @@ void setup() {
 
     levelButtons = new Button [3];
     
-    levelButtons[0]= new Button(levelButtonsImgs[0], levelButtonsHoverImgs[0], 345, 350, 118, 54, 1);
+    levelButtons[0]= new Button(levelButtonsImgs[0], levelButtonsHoverImgs[0], 250, 350, 118, 54, 1);
     levelButtons[1]= new Button(levelButtonsImgs[1], levelButtonsHoverImgs[1], 400, 350, 118, 54, 2);
-    levelButtons[2]= new Button(levelButtonsImgs[2], levelButtonsHoverImgs[2], 455, 350, 118, 54, 3);
+    levelButtons[2]= new Button(levelButtonsImgs[2], levelButtonsHoverImgs[2], 550, 350, 118, 54, 3);
    
     resetButtons = new Button [2];
     resetButtons[0]= new Button(resetButtonsImgs[0], 325, 350, 73, 77, CURRENT_SCREEN);
@@ -128,16 +145,16 @@ void setup() {
     instructionButton = new Button(instructionButtonImgs[0], instructionButtonImgs[1], 400, 425, 426,54, 4);
     
     //sound
-    //colCoins_sound = new SoundFile(this,"collect_coins.wav");
-    //gameOver_sound = new SoundFile(this,"game_over.wav");
-    //enemyColl_sound = new SoundFile(this,"enemy_collision.wav");
-    //win_sound = new SoundFile(this,"win.wav");
-    //bg_sound = new SoundFile(this,"bg_music.wav");
-    //win2_sound = new SoundFile(this,"win2.wav");
-    //jump_sound = new SoundFile(this,"jump.wav");
-    //bg_sound.play();
-    //bg_sound.loop();
-    //bg_sound.amp(.5);
+    colCoins_sound = new SoundFile(this,"collect_coins.wav");
+    gameOver_sound = new SoundFile(this,"game_over.wav");
+    enemyColl_sound = new SoundFile(this,"enemy_collision.wav");
+    win_sound = new SoundFile(this,"win.wav");
+    bg_sound = new SoundFile(this,"bg_music.wav");
+    win2_sound = new SoundFile(this,"win2.wav");
+    jump_sound = new SoundFile(this,"jump.wav");
+    bg_sound.play();
+    bg_sound.loop();
+    bg_sound.amp(.5);
     
 }
 void draw() {
@@ -145,6 +162,7 @@ void draw() {
     if(CURRENT_SCREEN == 0)
     {
       image(startScreenBG, 400, 300);
+      image(logo, 400,200, 462 , 184);
       levelButtons[0].update();
       levelButtons[1].update();
       levelButtons[2].update();
@@ -153,9 +171,29 @@ void draw() {
     
     else if(CURRENT_SCREEN == 1)
     {
-      //green color background
-      background(111, 209, 111);
-      image(Background, 0, 0, 1920, 1080);
+      image(background, 400, 300);
+      scroll();
+      displayAll();
+  
+      if (!isGameOver) {
+          updateAll();
+      }
+    }
+    
+    else if(CURRENT_SCREEN == 2)
+    {
+      image(background, 400, 300);
+      scroll();
+      displayAll();
+  
+      if (!isGameOver) {
+          updateAll();
+      }
+    }
+    
+    else if(CURRENT_SCREEN == 3)
+    {
+      image(background, 400, 300);
       scroll();
       displayAll();
   
@@ -198,7 +236,7 @@ void createPlatforms(String filename) {
                 s.center_y = SPRITE_SIZE / 2 + row * SPRITE_SIZE;
                 platforms.add(s);
             } else if (values[col].equals("2")) {
-                Sprite s = new Sprite(Grass, SPRITE_SCALE);
+                Sprite s = new Sprite(grass, SPRITE_SCALE);
                 s.center_x = SPRITE_SIZE / 2 + col * SPRITE_SIZE;
                 s.center_y = SPRITE_SIZE / 2 + row * SPRITE_SIZE;
                 platforms.add(s);
@@ -216,7 +254,7 @@ void createPlatforms(String filename) {
             } else if (values[col].equals("5")) {
                 float bLeft = col * SPRITE_SIZE;
                 float bRight = bLeft + 4 * SPRITE_SIZE;
-                Enemy enemy = new Enemy(spider, 50 / 128.0, bLeft, bRight);
+                Enemy enemy = new Enemy(mace, 50 / 128.0, bLeft, bRight);
                 enemy.center_x = SPRITE_SIZE / 2 + col * SPRITE_SIZE;
                 enemy.center_y = SPRITE_SIZE / 2 + row * SPRITE_SIZE;
                 enemies.add(enemy);
