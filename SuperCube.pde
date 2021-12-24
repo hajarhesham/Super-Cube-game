@@ -159,7 +159,7 @@ void setup() {
     jump_sound = new SoundFile(this,"jump.wav");
     bg_sound.play();
     bg_sound.loop();
-    bg_sound.amp(.5);
+    bg_sound.amp(0);
     
 }
 void draw() {
@@ -351,13 +351,18 @@ public void displayAll() {
         }
 
     }
+    for(int i= 0 ;i < 3;i++){
+      image(heartImgs[0], view_x + 35 + i * 45, view_y + 50 , 36,32);
+    }
+    for(int i= 0 ;i < p.lives;i++){
+      image(heartImgs[1], view_x + 35 + i * 45, view_y + 50 , 36,32);
+    }
     p.display();
 
     //enemy.display();
     textSize(32);
     fill(82, 121, 111);
-    text("Coins:" + num_coins, view_x + 50, view_y + 50);
-    text("lives:" + p.lives, view_x + 50, view_y + 100);
+    text("Coins:" + num_coins, view_x + 25, view_y +100);
 
     if (isGameOver) {
         fill(47, 62, 70);
