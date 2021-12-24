@@ -17,10 +17,17 @@ final static int LEFT_FACING = 2;
 final static float WIDTH = SPRITE_SIZE * 16;
 final static float HEIGHT = SPRITE_SIZE * 12;
 final static float GROUND_LEVEL = HEIGHT - SPRITE_SIZE;
-
+int CURRENT_SCREEN = 0;
 
 Player p;
-PImage Grass, crate, brown_brick, Background, gold, spider, pl;
+PImage Grass, crate, brown_brick, Background, gold, spider, pl, startScreenBG;
+PImage[] levelButtonsImgs,levelButtonsHoverImgs, resetButtonsImgs, homeButtonsImgs, instructionButtonImgs, heartImgs;
+PImage nextLevelButtonImg, coinCounter;
+
+
+Button[] levelButtons, resetButtons, homeButtons;
+Button instructionButton, nextLevelButton;
+
 ArrayList < Sprite > platforms;
 ArrayList < Sprite > coins;
 ArrayList < Enemy > enemies;
@@ -39,6 +46,7 @@ void setup() {
     //p = new Sprite("player.png",SPRITE_SCALE,100,200);
     pl = loadImage("player.png");
     Background = loadImage("Background.png");
+    startScreenBG = loadImage("StartScreen_bg.png");
     p = new Player(pl, 0.6);
     p.setBottom(GROUND_LEVEL);
     p.center_x = 100;
@@ -61,28 +69,101 @@ void setup() {
     Grass = loadImage("Grass.png");
     createPlatforms("map.csv");
     
+    
+    
+    //buttons
+    
+    levelButtonsImgs = new PImage[3];
+    levelButtonsImgs[0] = loadImage("level1button1.png");
+    levelButtonsImgs[1] = loadImage("level2button1.png");
+    levelButtonsImgs[2] = loadImage("level3button1.png");
+    
+    
+    levelButtonsHoverImgs = new PImage[3];
+    levelButtonsHoverImgs[0] = loadImage("level1button2.png");
+    levelButtonsHoverImgs[1] = loadImage("level2button2.png");
+    levelButtonsHoverImgs[2] = loadImage("level3button2.png");
+    
+    
+    
+    resetButtonsImgs = new PImage[2];
+    resetButtonsImgs[0] = loadImage("resetButton1.png");
+    resetButtonsImgs[1] = loadImage("resetButton2.png");
+    
+    homeButtonsImgs = new PImage[2];
+    homeButtonsImgs[0] = loadImage("homeButton1.png");
+    homeButtonsImgs[1] = loadImage("homeButton2.png");
+    
+    
+    instructionButtonImgs = new PImage[2];
+    instructionButtonImgs[0] = loadImage("instructionButton1.png");
+    instructionButtonImgs[1] = loadImage("instructionButton2.png");
+    
+    heartImgs = new PImage[2];
+    heartImgs[0] = loadImage("Heart.png");
+    heartImgs[1] = loadImage("Heart_filled.png");
+    
+    
+    nextLevelButtonImg = loadImage("nextLevelButton.png");
+    coinCounter = loadImage("coin_count.png");
+
+
+    levelButtons = new Button [3];
+    
+    levelButtons[0]= new Button(levelButtonsImgs[0], levelButtonsHoverImgs[0], 345, 350, 118, 54, 1);
+    levelButtons[1]= new Button(levelButtonsImgs[1], levelButtonsHoverImgs[1], 400, 350, 118, 54, 2);
+    levelButtons[2]= new Button(levelButtonsImgs[2], levelButtonsHoverImgs[2], 455, 350, 118, 54, 3);
+   
+    resetButtons = new Button [2];
+    resetButtons[0]= new Button(resetButtonsImgs[0], 325, 350, 73, 77, CURRENT_SCREEN);
+    resetButtons[1]= new Button(resetButtonsImgs[1], 325, 350, 73, 77, CURRENT_SCREEN);
+    
+    homeButtons = new Button [2];
+    homeButtons[0]= new Button(resetButtonsImgs[0], 350, 350, 73, 77, 0);
+    homeButtons[1]= new Button(resetButtonsImgs[1], 350, 350, 73, 77, 0);
+    
+    
+    nextLevelButton = new Button(nextLevelButtonImg, 375, 350, 73,77, CURRENT_SCREEN+1);
+    
+    instructionButton = new Button(instructionButtonImgs[0], instructionButtonImgs[1], 400, 425, 426,54, 4);
+    
     //sound
-    colCoins_sound = new SoundFile(this,"collect_coins.wav");
-    gameOver_sound = new SoundFile(this,"game_over.wav");
-    enemyColl_sound = new SoundFile(this,"enemy_collision.wav");
-    win_sound = new SoundFile(this,"win.wav");
-    bg_sound = new SoundFile(this,"bg_music.wav");
-    win2_sound = new SoundFile(this,"win2.wav");
-    jump_sound = new SoundFile(this,"jump.wav");
-    bg_sound.play();
-    bg_sound.loop();
-    bg_sound.amp(.5);
+    //colCoins_sound = new SoundFile(this,"collect_coins.wav");
+    //gameOver_sound = new SoundFile(this,"game_over.wav");
+    //enemyColl_sound = new SoundFile(this,"enemy_collision.wav");
+    //win_sound = new SoundFile(this,"win.wav");
+    //bg_sound = new SoundFile(this,"bg_music.wav");
+    //win2_sound = new SoundFile(this,"win2.wav");
+    //jump_sound = new SoundFile(this,"jump.wav");
+    //bg_sound.play();
+    //bg_sound.loop();
+    //bg_sound.amp(.5);
     
 }
 void draw() {
-    background(111, 209, 111);
-    image(Background, 0, 0, 1920, 1080);
-    scroll();
-    displayAll();
-
-    if (!isGameOver) {
-        updateAll();
+  
+    if(CURRENT_SCREEN == 0)
+    {
+      image(startScreenBG, 400, 300);
+      levelButtons[0].update();
+      levelButtons[1].update();
+      levelButtons[2].update();
+      instructionButton.update();
     }
+    
+    else if(CURRENT_SCREEN == 1)
+    {
+      //green color background
+      background(111, 209, 111);
+      image(Background, 0, 0, 1920, 1080);
+      scroll();
+      displayAll();
+  
+      if (!isGameOver) {
+          updateAll();
+      }
+    }
+
 
 }
 
@@ -308,7 +389,7 @@ void keyPressed() {
         p.change_x = -MOVE_SPEED;
     } else if (key == ' ' && isOnPlatform(p, platforms)) {
         p.change_y = -JUMP_SPEED;
-        if(isGameOver == false) jump_sound.play();
+        if(isGameOver == false && CURRENT_SCREEN >=1 && CURRENT_SCREEN <=3) jump_sound.play();
     } else if (isGameOver && key == ENTER)
         setup();
    
