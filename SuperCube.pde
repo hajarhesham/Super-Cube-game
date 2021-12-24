@@ -21,12 +21,12 @@ int CURRENT_SCREEN = 0;
 
 Player p;
 PImage grass, crate, brown_brick, background, gold, mace, pl, startScreenBG;
-PImage[] levelButtonsImgs,levelButtonsHoverImgs, resetButtonsImgs, homeButtonsImgs, instructionButtonImgs, heartImgs;
-PImage nextLevelButtonImg, coinCounter, logo;
+PImage[] levelButtonsImgs,levelButtonsHoverImgs, resetButtonsImgs, homeButtonsImgs, instructionButtonImgs, heartImgs, closeButtons;
+PImage nextLevelButtonImg, coinCounter, logo, instructions;
 
 
 Button[] levelButtons, resetButtons, homeButtons;
-Button instructionButton, nextLevelButton;
+Button instructionButton, nextLevelButton, closeButton;
 
 ArrayList < Sprite > platforms;
 ArrayList < Sprite > coins;
@@ -115,6 +115,7 @@ void setup() {
     instructionButtonImgs = new PImage[2];
     instructionButtonImgs[0] = loadImage("instructionButton1.png");
     instructionButtonImgs[1] = loadImage("instructionButton2.png");
+    instructions = loadImage("instructions.png");
     
     heartImgs = new PImage[2];
     heartImgs[0] = loadImage("Heart.png");
@@ -123,7 +124,10 @@ void setup() {
     
     nextLevelButtonImg = loadImage("nextLevelButton.png");
     coinCounter = loadImage("coin_count.png");
-
+    
+    closeButtons = new PImage[2];
+    closeButtons[0] = loadImage("closeButton1.png");
+    closeButtons[1] = loadImage("closeButton2.png");
 
     levelButtons = new Button [3];
     
@@ -143,6 +147,7 @@ void setup() {
     nextLevelButton = new Button(nextLevelButtonImg, 375, 350, 73,77, CURRENT_SCREEN+1);
     
     instructionButton = new Button(instructionButtonImgs[0], instructionButtonImgs[1], 400, 425, 426,54, 4);
+    closeButton = new Button(closeButtons[0], closeButtons[1], 585, 65, 55, 55, 0);
     
     //sound
     colCoins_sound = new SoundFile(this,"collect_coins.wav");
@@ -200,6 +205,12 @@ void draw() {
       if (!isGameOver) {
           updateAll();
       }
+    }
+    else if(CURRENT_SCREEN == 4)
+    {
+      image(startScreenBG, 400, 300);
+      image(instructions, 400, 300);
+      closeButton.update();
     }
 
 
