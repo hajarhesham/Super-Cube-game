@@ -40,6 +40,7 @@ public class Button{
     if(mousePressed){
       if(hovered) 
         CURRENT_SCREEN = buttonId;
+        setup();
     }
   }
   void update()
@@ -47,7 +48,6 @@ public class Button{
     hover();
     display();
     press();
-    
   }
   void display()
   {
