@@ -308,7 +308,7 @@ void keyPressed() {
         p.change_x = -MOVE_SPEED;
     } else if (key == ' ' && isOnPlatform(p, platforms)) {
         p.change_y = -JUMP_SPEED;
-        jump_sound.play();
+        if(isGameOver == false) jump_sound.play();
     } else if (isGameOver && key == ENTER)
         setup();
    
