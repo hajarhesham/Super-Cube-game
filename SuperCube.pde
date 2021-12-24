@@ -1,3 +1,5 @@
+import processing.sound.*;
+
 final static float MOVE_SPEED = 5;
 final static float SPRITE_SCALE = 50.0 / 128;
 final static float SPRITE_SIZE = 50;
@@ -28,6 +30,7 @@ float view_x;
 float view_y;
 int num_coins;
 boolean isGameOver;
+SoundFile colCoins_sound ,gameOver_sound ,enemyColl_sound ,win_sound, bg_sound, win2_sound, jump_sound;
 
 
 void setup() {
@@ -57,7 +60,19 @@ void setup() {
     crate = loadImage("crate.png");
     Grass = loadImage("Grass.png");
     createPlatforms("map.csv");
-
+    
+    //sound
+    colCoins_sound = new SoundFile(this,"collect_coins.wav");
+    gameOver_sound = new SoundFile(this,"game_over.wav");
+    enemyColl_sound = new SoundFile(this,"enemy_collision.wav");
+    win_sound = new SoundFile(this,"win.wav");
+    bg_sound = new SoundFile(this,"bg_music.wav");
+    win2_sound = new SoundFile(this,"win2.wav");
+    jump_sound = new SoundFile(this,"jump.wav");
+    bg_sound.play();
+    bg_sound.loop();
+    bg_sound.amp(.5);
+    
 }
 void draw() {
     background(111, 209, 111);
@@ -226,6 +241,7 @@ public void displayAll() {
 }
 
 public void updateAll() {
+    
     p.updateAnimation();
 
     reslovePlatformCollisions(p, platforms);
@@ -248,10 +264,14 @@ void collectCoins() {
     if (collision_list.size() > 0) {
         for (Sprite coin: collision_list) {
             num_coins++;
+            colCoins_sound.play();
             coins.remove(coin);
         }
     }
     if (coins.size() == 0) {
+        bg_sound.stop();
+        win2_sound.play();
+        win_sound.play();
         isGameOver = true;
     }
 }
@@ -263,10 +283,14 @@ void checkDeath() {
         boolean fallOffCliff = p.getBottom() > GROUND_LEVEL;
         if (colideEnemy || fallOffCliff) {
             p.lives--;
-            if (p.lives == 0)
+            if (p.lives == 0){
+                bg_sound.stop();
+                gameOver_sound.play();
                 isGameOver = true;
-            else
+            }else{
+                enemyColl_sound.play();
                 p.center_x = 100;
+            }
             p.setBottom(GROUND_LEVEL);
 
         }
@@ -284,6 +308,7 @@ void keyPressed() {
         p.change_x = -MOVE_SPEED;
     } else if (key == ' ' && isOnPlatform(p, platforms)) {
         p.change_y = -JUMP_SPEED;
+        jump_sound.play();
     } else if (isGameOver && key == ENTER)
         setup();
    
