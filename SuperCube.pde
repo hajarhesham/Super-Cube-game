@@ -169,6 +169,8 @@ void setup() {
         bg_sound.loop();
         bg_sound.amp(0.3);
       }
+      
+         
 
     
 }
@@ -182,6 +184,14 @@ void draw() {
       levelButtons[1].update();
       levelButtons[2].update();
       instructionButton.update();
+      
+      if(frameCount % 40 == 0) {
+        levelButtons[0].disabled = false;
+        levelButtons[1].disabled = false;
+        levelButtons[2].disabled = false;
+        instructionButton.disabled = false;
+      }
+      
     }
     
     else if(CURRENT_SCREEN == 1)
@@ -222,8 +232,9 @@ void draw() {
       image(instructions, 400, 300);
       closeButton.update();
     }
+    
 
-
+  
 }
 
 void scroll() {
@@ -380,13 +391,16 @@ public void displayAll() {
     }
     
     if (isGameOver) {
-     
+         levelButtons[0].disabled = true;
+         levelButtons[1].disabled = true;
+         levelButtons[2].disabled = true;
+         instructionButton.disabled = true;
         if (p.lives == 0){
           image(lostMenu , view_x+400 ,view_y+300 , 473 , 333);
           resetButtons[1]= new Button(resetButtonsImgs[1], view_x+340, view_y+350, 73, 77, CURRENT_SCREEN);
           homeButtons[1]= new Button(homeButtonsImgs[1], view_x+460, view_y+350, 73, 77, 0);
           homeButtons[1].update();
-          resetButtons[1].update();
+          resetButtons[1].update();      
         }
         else{
            image( winMenu ,view_x+400 ,view_y+300 , 473 , 333);
@@ -408,7 +422,6 @@ public void displayAll() {
 }
 
 public void updateAll() {
-    
     p.updateAnimation();
 
     reslovePlatformCollisions(p, platforms);

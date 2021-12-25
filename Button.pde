@@ -2,7 +2,8 @@ public class Button{
   PImage currentImg, buttonImg, hoverImg;
   float xPos, yPos, bWidth, bHeight;
   int buttonId;
-  boolean hovered = false;
+  boolean hovered;
+  boolean disabled;
   
   Button(PImage img, PImage hover, float x, float y, float w, float h, int id)
   {
@@ -13,6 +14,7 @@ public class Button{
     bWidth = w;
     bHeight = h;
     buttonId = id;
+    hovered = false;
   }
   
   Button(PImage img, float x, float y, float w, float h, int id)
@@ -23,6 +25,8 @@ public class Button{
     bWidth = w;
     bHeight = h;
     buttonId = id;
+    hovered = false;
+    disabled = false;
   }
   
   void hover(){
@@ -37,6 +41,7 @@ public class Button{
       currentImg = buttonImg;
     }
   }
+  
   void press() 
   {
     if(mousePressed){
@@ -46,14 +51,21 @@ public class Button{
       }
     }
   }
+  
   void update()
   {
     hover();
     display();
-    press();
+    if(this.disabled == false){
+      
+      press();
+      
+    }
   }
+  
   void display()
   {
     image(currentImg, xPos, yPos, bWidth, bHeight);
   }
+  
 }
