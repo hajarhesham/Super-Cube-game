@@ -23,6 +23,7 @@ Player p;
 PImage grass, crate, brown_brick, background, gold, mace, pl, startScreenBG;
 PImage[] levelButtonsImgs,levelButtonsHoverImgs, resetButtonsImgs, homeButtonsImgs, instructionButtonImgs, heartImgs, closeButtons;
 PImage nextLevelButtonImg, coinCounter, logo, instructions;
+PFont coinFont;
 
 
 Button[] levelButtons, resetButtons, homeButtons;
@@ -65,6 +66,8 @@ void setup() {
     mace = loadImage("Mace.png");
     brown_brick = loadImage("brown_brick.png");
     crate = loadImage("crate.png");
+   
+    coinFont = createFont("LuckiestGuy-Regular.ttf" , 22);
     
     if(CURRENT_SCREEN == 1)
     {
@@ -357,13 +360,18 @@ public void displayAll() {
     for(int i= 0 ;i < p.lives;i++){
       image(heartImgs[1], view_x + 35 + i * 45, view_y + 50 , 36,32);
     }
+    image(coinCounter,view_x + 65 , view_y + 100 , 96 ,38);
     p.display();
 
-    //enemy.display();
-    textSize(32);
-    fill(82, 121, 111);
-    text("Coins:" + num_coins, view_x + 25, view_y +100);
-
+    fill(255);
+    textFont(coinFont);
+    if(num_coins <10){
+      text("0" + num_coins, view_x + 65, view_y +109);
+    }
+    else{
+      text(num_coins, view_x + 65, view_y +109);
+    }
+    
     if (isGameOver) {
         fill(47, 62, 70);
         text("Game Over!:", view_x + width / 2 - 100, view_y + height / 2);
