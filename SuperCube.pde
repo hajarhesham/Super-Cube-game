@@ -40,18 +40,14 @@ float view_y;
 int num_coins;
 boolean isGameOver;
 SoundFile colCoins_sound ,gameOver_sound ,enemyColl_sound ,win_sound, bg_sound, win2_sound, jump_sound;
-boolean initializedSound =false;
+boolean initialized =false;
 void setup() {
     size(800, 600);
     imageMode(CENTER);
-    //p = new Sprite("player.png",SPRITE_SCALE,100,200);
     pl = loadImage("player.png");
-    startScreenBG = loadImage("StartScreen_bg.png");
     p = new Player(pl, 0.6);
     p.setBottom(GROUND_LEVEL);
     p.center_x = 100;
-    //p.change_x =0;
-    //p.change_y =0;
     num_coins = 0;
 
     isGameOver = false;
@@ -61,17 +57,6 @@ void setup() {
     view_x = 0;
     view_y = 0;
 
-
-    gold = loadImage("gold1.png");
-    mace = loadImage("Mace.png");
-    brown_brick = loadImage("brown_brick.png");
-    crate = loadImage("crate.png");
-    
-    winMenu = loadImage("winMenu.png");
-    lostMenu = loadImage("lostMenu.png");
-   
-    coinFont = createFont("LuckiestGuy-Regular.ttf" , 22);
-    
     if(CURRENT_SCREEN == 1)
     {
       background = loadImage("background1.png");
@@ -90,74 +75,83 @@ void setup() {
       grass = loadImage("grass3.png");
       createPlatforms("map3.csv");
     }
-    
-    //logo
-     logo = loadImage("logo.png");
-    
-    //buttons
-    
-    levelButtonsImgs = new PImage[3];
-    levelButtonsImgs[0] = loadImage("level1button1.png");
-    levelButtonsImgs[1] = loadImage("level2button1.png");
-    levelButtonsImgs[2] = loadImage("level3button1.png");
-    
-    
-    levelButtonsHoverImgs = new PImage[3];
-    levelButtonsHoverImgs[0] = loadImage("level1button2.png");
-    levelButtonsHoverImgs[1] = loadImage("level2button2.png");
-    levelButtonsHoverImgs[2] = loadImage("level3button2.png");
-    
-    
-    
-    resetButtonsImgs = new PImage[2];
-    resetButtonsImgs[0] = loadImage("resetButton1.png");
-    resetButtonsImgs[1] = loadImage("resetButton2.png");
-    
-    homeButtonsImgs = new PImage[2];
-    homeButtonsImgs[0] = loadImage("homeButton1.png");
-    homeButtonsImgs[1] = loadImage("homeButton2.png");
-    
-    
-    instructionButtonImgs = new PImage[2];
-    instructionButtonImgs[0] = loadImage("instructionButton1.png");
-    instructionButtonImgs[1] = loadImage("instructionButton2.png");
-    instructions = loadImage("instructions.png");
-    
-    heartImgs = new PImage[2];
-    heartImgs[0] = loadImage("Heart.png");
-    heartImgs[1] = loadImage("Heart_filled.png");
-    
-    
-    nextLevelButtonImg = loadImage("nextLevelButton.png");
-    coinCounter = loadImage("coin_count.png");
-    
-    closeButtons = new PImage[2];
-    closeButtons[0] = loadImage("closeButton1.png");
-    closeButtons[1] = loadImage("closeButton2.png");
 
-    levelButtons = new Button [3];
-    
-    levelButtons[0]= new Button(levelButtonsImgs[0], levelButtonsHoverImgs[0], 250, 350, 118, 54, 1);
-    levelButtons[1]= new Button(levelButtonsImgs[1], levelButtonsHoverImgs[1], 400, 350, 118, 54, 2);
-    levelButtons[2]= new Button(levelButtonsImgs[2], levelButtonsHoverImgs[2], 550, 350, 118, 54, 3);
-   
-    resetButtons = new Button [2];
-    resetButtons[0]= new Button(resetButtonsImgs[0], 300, 350, 73, 77, CURRENT_SCREEN);
-    resetButtons[1]= new Button(resetButtonsImgs[1], 340, 350, 73, 77, CURRENT_SCREEN);
-    
-    homeButtons = new Button [2];
-    homeButtons[0]= new Button(homeButtonsImgs[0], 400, 350, 73, 77, 0);
-    homeButtons[1]= new Button(homeButtonsImgs[1], 460, 350, 73, 77, 0);
-    
-    
-    nextLevelButton = new Button(nextLevelButtonImg, 500, 350, 73,77, CURRENT_SCREEN+1 );
-    
-    instructionButton = new Button(instructionButtonImgs[0], instructionButtonImgs[1], 400, 425, 426,54, 4);
-    closeButton = new Button(closeButtons[0], closeButtons[1], 585, 65, 55, 55, 0);
-    
     //sound
-      if(!initializedSound)
+      if(!initialized)
       {
+        startScreenBG = loadImage("StartScreen_bg.png");
+        gold = loadImage("gold1.png");
+        mace = loadImage("Mace.png");
+        brown_brick = loadImage("brown_brick.png");
+        crate = loadImage("crate.png");
+        
+        winMenu = loadImage("winMenu.png");
+        lostMenu = loadImage("lostMenu.png");
+       
+        coinFont = createFont("LuckiestGuy-Regular.ttf" , 22);
+        //logo
+         logo = loadImage("logo.png");
+        
+        //buttons
+        
+        levelButtonsImgs = new PImage[3];
+        levelButtonsImgs[0] = loadImage("level1button1.png");
+        levelButtonsImgs[1] = loadImage("level2button1.png");
+        levelButtonsImgs[2] = loadImage("level3button1.png");
+        
+        
+        levelButtonsHoverImgs = new PImage[3];
+        levelButtonsHoverImgs[0] = loadImage("level1button2.png");
+        levelButtonsHoverImgs[1] = loadImage("level2button2.png");
+        levelButtonsHoverImgs[2] = loadImage("level3button2.png");
+        
+        
+        
+        resetButtonsImgs = new PImage[2];
+        resetButtonsImgs[0] = loadImage("resetButton1.png");
+        resetButtonsImgs[1] = loadImage("resetButton2.png");
+        
+        homeButtonsImgs = new PImage[2];
+        homeButtonsImgs[0] = loadImage("homeButton1.png");
+        homeButtonsImgs[1] = loadImage("homeButton2.png");
+        
+        
+        instructionButtonImgs = new PImage[2];
+        instructionButtonImgs[0] = loadImage("instructionButton1.png");
+        instructionButtonImgs[1] = loadImage("instructionButton2.png");
+        instructions = loadImage("instructions.png");
+        
+        heartImgs = new PImage[2];
+        heartImgs[0] = loadImage("Heart.png");
+        heartImgs[1] = loadImage("Heart_filled.png");
+        
+        
+        nextLevelButtonImg = loadImage("nextLevelButton.png");
+        coinCounter = loadImage("coin_count.png");
+        
+        closeButtons = new PImage[2];
+        closeButtons[0] = loadImage("closeButton1.png");
+        closeButtons[1] = loadImage("closeButton2.png");
+    
+        levelButtons = new Button [3];
+        
+        levelButtons[0]= new Button(levelButtonsImgs[0], levelButtonsHoverImgs[0], 250, 350, 118, 54, 1);
+        levelButtons[1]= new Button(levelButtonsImgs[1], levelButtonsHoverImgs[1], 400, 350, 118, 54, 2);
+        levelButtons[2]= new Button(levelButtonsImgs[2], levelButtonsHoverImgs[2], 550, 350, 118, 54, 3);
+       
+        resetButtons = new Button [2];
+        resetButtons[0]= new Button(resetButtonsImgs[0], view_x+300, view_y+350, 73, 77, CURRENT_SCREEN);
+        resetButtons[1]= new Button(resetButtonsImgs[1], view_x+340, view_y+350, 73, 77, CURRENT_SCREEN);
+        
+        homeButtons = new Button [2];
+        homeButtons[0]= new Button(homeButtonsImgs[0], view_x+400, view_y+350, 73, 77, 0);
+        homeButtons[1]= new Button(homeButtonsImgs[1], view_x+460, view_y+350, 73, 77, 0);
+        
+        
+        nextLevelButton = new Button(nextLevelButtonImg, view_x+500, view_y+350, 73,77, CURRENT_SCREEN+1 );
+        
+        instructionButton = new Button(instructionButtonImgs[0], instructionButtonImgs[1], 400, 425, 426,54, 4);
+        closeButton = new Button(closeButtons[0], closeButtons[1], 585, 65, 55, 55, 0);
         colCoins_sound = new SoundFile(this,"collect_coins.wav");
         gameOver_sound = new SoundFile(this,"game_over.wav");
         enemyColl_sound = new SoundFile(this,"enemy_collision.wav");
@@ -166,9 +160,8 @@ void setup() {
         win2_sound = new SoundFile(this,"win2.wav");
         jump_sound = new SoundFile(this,"jump.wav");
         
-        initializedSound = true;
+        initialized = true;
       }
-      
       
       if(!bg_sound.isPlaying())
       {
@@ -176,6 +169,7 @@ void setup() {
         bg_sound.loop();
         bg_sound.amp(0.3);
       }
+
     
 }
 void draw() {
@@ -386,28 +380,29 @@ public void displayAll() {
     }
     
     if (isGameOver) {
-      
-        //fill(47, 62, 70);
-        //text("Game Over!:", view_x + width / 2 - 100, view_y + height / 2);
+     
         if (p.lives == 0){
-          image(lostMenu , 400 ,300 , 473 , 333);
+          image(lostMenu , view_x+400 ,view_y+300 , 473 , 333);
+          resetButtons[1]= new Button(resetButtonsImgs[1], view_x+340, view_y+350, 73, 77, CURRENT_SCREEN);
+          homeButtons[1]= new Button(homeButtonsImgs[1], view_x+460, view_y+350, 73, 77, 0);
           homeButtons[1].update();
           resetButtons[1].update();
         }
         else{
-           image( winMenu , 400 ,300 , 473 , 333);
+           image( winMenu ,view_x+400 ,view_y+300 , 473 , 333);
            if(CURRENT_SCREEN ==3){
-             homeButtons[0]= new Button(homeButtonsImgs[0], 460, 350, 73, 77, 0);
-             resetButtons[0]= new Button(resetButtonsImgs[0], 340, 350, 73, 77, CURRENT_SCREEN);
-             homeButtons[0].update();
-             resetButtons[0].update();
+             homeButtons[0]= new Button(homeButtonsImgs[0], view_x+460, view_y+350, 73, 77, 0);
+             resetButtons[0]= new Button(resetButtonsImgs[0], view_x+340, view_y+350, 73, 77, CURRENT_SCREEN);
            }
-           else { 
+           else if(CURRENT_SCREEN ==1 || CURRENT_SCREEN ==2) { 
+             resetButtons[0]= new Button(resetButtonsImgs[0], view_x+300, view_y+350, 73, 77, CURRENT_SCREEN);
+             homeButtons[0]= new Button(homeButtonsImgs[0], view_x+400, view_y+350, 73, 77, 0);
+             nextLevelButton = new Button(nextLevelButtonImg, view_x+500, view_y+350, 73,77, CURRENT_SCREEN+1 );
              nextLevelButton.update();
-             homeButtons[0].update();
-             resetButtons[0].update();
            }
-            
+           
+            homeButtons[0].update();
+            resetButtons[0].update();
         }
     }
 }
@@ -440,7 +435,7 @@ void collectCoins() {
             coins.remove(coin);
         }
     }
-    if (coins.size() == 0) {
+    if (coins.size() == 0  && CURRENT_SCREEN >=1 && CURRENT_SCREEN <=3) {
         bg_sound.stop();
         win2_sound.play();
         win_sound.play();
@@ -481,9 +476,7 @@ void keyPressed() {
     } else if (key == ' ' && isOnPlatform(p, platforms)) {
         p.change_y = -JUMP_SPEED;
         if(isGameOver == false && CURRENT_SCREEN >=1 && CURRENT_SCREEN <=3) jump_sound.play();
-    } else if (isGameOver && key == ENTER)
-        setup();
-   
+    }
 }
 
 void keyReleased() {
