@@ -38,9 +38,10 @@ public class Button{
   void press() 
   {
     if(mousePressed){
-      if(hovered) 
+      if(hovered) {
         CURRENT_SCREEN = buttonId;
         setup();
+      }
     }
   }
   void update()

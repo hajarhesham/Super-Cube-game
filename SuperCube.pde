@@ -40,8 +40,7 @@ float view_y;
 int num_coins;
 boolean isGameOver;
 SoundFile colCoins_sound ,gameOver_sound ,enemyColl_sound ,win_sound, bg_sound, win2_sound, jump_sound;
-
-
+boolean initializedSound =false;
 void setup() {
     size(800, 600);
     imageMode(CENTER);
@@ -157,16 +156,26 @@ void setup() {
     closeButton = new Button(closeButtons[0], closeButtons[1], 585, 65, 55, 55, 0);
     
     //sound
-    colCoins_sound = new SoundFile(this,"collect_coins.wav");
-    gameOver_sound = new SoundFile(this,"game_over.wav");
-    enemyColl_sound = new SoundFile(this,"enemy_collision.wav");
-    win_sound = new SoundFile(this,"win.wav");
-    bg_sound = new SoundFile(this,"bg_music.wav");
-    win2_sound = new SoundFile(this,"win2.wav");
-    jump_sound = new SoundFile(this,"jump.wav");
-    bg_sound.play();
-    bg_sound.loop();
-    bg_sound.amp(0.5);
+      if(!initializedSound)
+      {
+        colCoins_sound = new SoundFile(this,"collect_coins.wav");
+        gameOver_sound = new SoundFile(this,"game_over.wav");
+        enemyColl_sound = new SoundFile(this,"enemy_collision.wav");
+        win_sound = new SoundFile(this,"win.wav");
+        bg_sound = new SoundFile(this,"bg_music.wav");
+        win2_sound = new SoundFile(this,"win2.wav");
+        jump_sound = new SoundFile(this,"jump.wav");
+        
+        initializedSound = true;
+      }
+      
+      
+      if(!bg_sound.isPlaying())
+      {
+        bg_sound.play();
+        bg_sound.loop();
+        bg_sound.amp(0.3);
+      }
     
 }
 void draw() {
