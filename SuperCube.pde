@@ -21,7 +21,7 @@ int CURRENT_SCREEN = 0;
 
 
 Player p;
-PImage grass, crate, brown_brick, background, gold, mace, pl, startScreenBG;
+PImage grass, crate, brown_brick, background, gold, mace, pl, startScreenBG, water;
 PImage[] levelButtonsImgs,levelButtonsHoverImgs, resetButtonsImgs, homeButtonsImgs, instructionButtonImgs, heartImgs, closeButtons;
 PImage nextLevelButtonImg, coinCounter, logo, instructions , winMenu , lostMenu;
 PFont coinFont;
@@ -33,13 +33,14 @@ Button instructionButton, nextLevelButton, closeButton;
 ArrayList < Sprite > platforms;
 ArrayList < Sprite > coins;
 ArrayList < Enemy > enemies;
+ArrayList < Sprite > waterWaves;
 
 
 float view_x;
 float view_y;
 int num_coins;
 boolean isGameOver;
-SoundFile colCoins_sound ,gameOver_sound ,enemyColl_sound ,win_sound, bg_sound, win2_sound, jump_sound;
+SoundFile colCoins_sound ,gameOver_sound ,enemyColl_sound ,win_sound, bg_sound, win2_sound, jump_sound, water_sound;
 boolean initialized = false;
 
 void setup() {
@@ -55,6 +56,7 @@ void setup() {
     platforms = new ArrayList < Sprite > ();
     coins = new ArrayList < Sprite > ();
     enemies = new ArrayList < Enemy > ();
+    waterWaves = new ArrayList < Sprite > ();
     view_x = 0;
     view_y = 0;
     
@@ -86,6 +88,7 @@ void setup() {
         mace = loadImage("Mace.png");
         brown_brick = loadImage("brown_brick.png");
         crate = loadImage("crate.png");
+        water = loadImage("water.png");
         
         winMenu = loadImage("winMenu.png");
         lostMenu = loadImage("lostMenu.png");
@@ -161,6 +164,8 @@ void setup() {
         bg_sound = new SoundFile(this,"bg_music.wav");
         win2_sound = new SoundFile(this,"win2.wav");
         jump_sound = new SoundFile(this,"jump.wav");
+        water_sound = new SoundFile(this,"water.mp3");
+        
         
         initialized = true;
       }
@@ -169,7 +174,7 @@ void setup() {
       {
         bg_sound.play();
         bg_sound.loop();
-        bg_sound.amp(0.3);
+        bg_sound.amp(0.1);
       }
       
          
@@ -195,44 +200,46 @@ void draw() {
       }
       
     }
+    else{
+      homeButtons[1]= new Button(homeButtonsImgs[1], view_x+460, view_y+350, 73, 77, 0);
+      if(CURRENT_SCREEN == 1)
+      {
+        image(background, 400, 300);
+        scroll();
+        displayAll();
     
-    else if(CURRENT_SCREEN == 1)
-    {
-      image(background, 400, 300);
-      scroll();
-      displayAll();
-  
-      if (!isGameOver) {
-          updateAll();
+        if (!isGameOver) {
+            updateAll();
+        }
       }
-    }
+      
+      else if(CURRENT_SCREEN == 2)
+      {
+        image(background, 400, 300);
+        scroll();
+        displayAll();
     
-    else if(CURRENT_SCREEN == 2)
-    {
-      image(background, 400, 300);
-      scroll();
-      displayAll();
-  
-      if (!isGameOver) {
-          updateAll();
+        if (!isGameOver) {
+            updateAll();
+        }
       }
-    }
+      
+      else if(CURRENT_SCREEN == 3)
+      {
+        image(background, 400, 300);
+        scroll();
+        displayAll();
     
-    else if(CURRENT_SCREEN == 3)
-    {
-      image(background, 400, 300);
-      scroll();
-      displayAll();
-  
-      if (!isGameOver) {
-          updateAll();
+        if (!isGameOver) {
+            updateAll();
+        }
       }
-    }
-    else if(CURRENT_SCREEN == 4)
-    {
-      image(startScreenBG, 400, 300);
-      image(instructions, 400, 300);
-      closeButton.update();
+      else if(CURRENT_SCREEN == 4)
+      {
+        image(startScreenBG, 400, 300);
+        image(instructions, 400, 300);
+        closeButton.update();
+      }
     }
     
 
@@ -292,6 +299,12 @@ void createPlatforms(String filename) {
                 enemy.center_x = SPRITE_SIZE / 2 + col * SPRITE_SIZE;
                 enemy.center_y = SPRITE_SIZE / 2 + row * SPRITE_SIZE;
                 enemies.add(enemy);
+            }  else if (values[col].equals("9")) {
+                Water w = new Water (water, SPRITE_SCALE);
+                w.center_x = SPRITE_SIZE / 2 + col * SPRITE_SIZE;
+                w.center_y = SPRITE_SIZE / 2 + row * SPRITE_SIZE+8;
+                waterWaves.add(w);
+                
             }
         }
     }
@@ -361,19 +374,21 @@ public ArrayList < Sprite > checkCollisionList(Sprite s, ArrayList < Sprite > li
 
 public void displayAll() {
 
-
+    
 
     for (Sprite s: platforms)
         s.display();
 
-    for (Sprite c: coins) {
+    for (Sprite c: coins) 
         c.display();
-
-        for (Enemy e: enemies) {
-            e.display();
-        }
-
-    }
+    
+    for (Sprite w: waterWaves) 
+        w.display();
+    
+    for (Enemy e: enemies)
+       e.display();
+     
+    
     for(int i= 0 ;i < 3;i++){
       image(heartImgs[0], view_x + 35 + i * 45, view_y + 50 , 36,32);
     }
@@ -420,6 +435,9 @@ public void displayAll() {
             homeButtons[0].update();
             resetButtons[0].update();
         }
+    }else{
+      homeButtons[1]= new Button(homeButtonsImgs[1], view_x+750, view_y+50, 73/1.5, 77/1.5, 0);
+      homeButtons[1].update();
     }
 }
 
@@ -438,7 +456,7 @@ public void updateAll() {
     collectCoins();
     checkDeath();
     for (Sprite c: coins)((AnimatedSprite) c).updateAnimation();
-
+    for (Sprite w: waterWaves)((AnimatedSprite) w).updateAnimation();
 }
 
 void collectCoins() {
@@ -462,6 +480,7 @@ void checkDeath() {
     boolean colideEnemy = false;
     for (Enemy e: enemies) {
         colideEnemy = checkCollision(p, e);
+        
         boolean fallOffCliff = p.getBottom() > GROUND_LEVEL;
         if (colideEnemy || fallOffCliff) {
             p.lives--;
@@ -470,17 +489,19 @@ void checkDeath() {
                 gameOver_sound.play();
                 isGameOver = true;
             }else{
-                enemyColl_sound.play();
+                if (colideEnemy) enemyColl_sound.play();
+                if (fallOffCliff){
+                  water_sound.play();
+                  water_sound.amp(3);
+                }
                 p.center_x = 100;
             }
             p.setBottom(GROUND_LEVEL);
 
         }
     }
-
-
-}
-
+   
+    }
 
 
 void keyPressed() {
