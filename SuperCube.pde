@@ -40,7 +40,8 @@ float view_y;
 int num_coins;
 boolean isGameOver;
 SoundFile colCoins_sound ,gameOver_sound ,enemyColl_sound ,win_sound, bg_sound, win2_sound, jump_sound;
-boolean initialized =false;
+
+
 void setup() {
     size(800, 600);
     imageMode(CENTER);
