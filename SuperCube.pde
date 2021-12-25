@@ -56,7 +56,7 @@ void setup() {
     enemies = new ArrayList < Enemy > ();
     view_x = 0;
     view_y = 0;
-
+    if(initialized == true) gameOver_sound.stop();
     if(CURRENT_SCREEN == 1)
     {
       background = loadImage("background1.png");
