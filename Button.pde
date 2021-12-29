@@ -47,7 +47,7 @@ public class Button{
   {
     if(mousePressed){
       if(hovered) {
-        if(this.buttonId != 9){
+        if(this.buttonId != -1){
           CURRENT_SCREEN = buttonId;
           setup();
         }
