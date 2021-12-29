@@ -15,6 +15,7 @@ public class Button{
     bHeight = h;
     buttonId = id;
     hovered = false;
+    disabled = false;
   }
   
   Button(PImage img, float x, float y, float w, float h, int id)
@@ -46,21 +47,19 @@ public class Button{
   {
     if(mousePressed){
       if(hovered) {
-        CURRENT_SCREEN = buttonId;
-        setup();
+        if(this.buttonId != 9){
+          CURRENT_SCREEN = buttonId;
+          setup();
+        }
       }
-    }
+    }  
   }
   
   void update()
   {
     hover();
     display();
-    if(this.disabled == false){
-      
-      press();
-      
-    }
+    if(this.disabled == false) press();
   }
   
   void display()
