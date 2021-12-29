@@ -18,17 +18,20 @@ final static float WIDTH = SPRITE_SIZE * 16;
 final static float HEIGHT = SPRITE_SIZE * 12;
 final static float GROUND_LEVEL = HEIGHT - SPRITE_SIZE;
 int CURRENT_SCREEN = 0;
+boolean isMute = false;
+boolean runningBgSound = true;
+
 
 
 Player p;
 PImage grass, crate, brown_brick, background, gold, mace, pl, startScreenBG, water;
-PImage[] levelButtonsImgs,levelButtonsHoverImgs, resetButtonsImgs, homeButtonsImgs, instructionButtonImgs, heartImgs, closeButtons;
+PImage[] levelButtonsImgs,levelButtonsHoverImgs, resetButtonsImgs, homeButtonsImgs, instructionButtonImgs, heartImgs, closeButtons, muteButtonImgs;
 PImage nextLevelButtonImg, coinCounter, logo, instructions , winMenu , lostMenu;
 PFont coinFont;
 
 
 Button[] levelButtons, resetButtons, homeButtons;
-Button instructionButton, nextLevelButton, closeButton;
+Button instructionButton, nextLevelButton, closeButton, mute;
 
 ArrayList < Sprite > platforms;
 ArrayList < Sprite > coins;
@@ -99,6 +102,10 @@ void setup() {
         
         //buttons
         
+        muteButtonImgs = new PImage[2];
+        muteButtonImgs[0] = loadImage("mute.png");
+        muteButtonImgs[1] = loadImage("unmute.png");
+        
         levelButtonsImgs = new PImage[3];
         levelButtonsImgs[0] = loadImage("level1button1.png");
         levelButtonsImgs[1] = loadImage("level2button1.png");
@@ -137,7 +144,8 @@ void setup() {
         closeButtons = new PImage[2];
         closeButtons[0] = loadImage("closeButton1.png");
         closeButtons[1] = loadImage("closeButton2.png");
-    
+        
+        
         levelButtons = new Button [3];
         
         levelButtons[0]= new Button(levelButtonsImgs[0], levelButtonsHoverImgs[0], 250, 350, 118, 54, 1);
@@ -170,7 +178,7 @@ void setup() {
         initialized = true;
       }
       
-      if(!bg_sound.isPlaying())
+      if(!bg_sound.isPlaying() && runningBgSound)
       {
         bg_sound.play();
         bg_sound.loop();
@@ -438,14 +446,21 @@ public void displayAll() {
     }else{
       homeButtons[1]= new Button(homeButtonsImgs[1], view_x+750, view_y+50, 73/1.5, 77/1.5, 0);
       homeButtons[1].update();
+      PImage temp;
+      if(runningBgSound) temp=muteButtonImgs[1]; else temp=muteButtonImgs[0];
+      mute = new Button(temp,view_x+685, view_y+50, 73/1.5, 77/1.5, 9);
+      mute.update();
     }
+    
+    
 }
 
 public void updateAll() {
     p.updateAnimation();
-
     reslovePlatformCollisions(p, platforms);
 
+    
+    
 
 
     for (Enemy e: enemies) {
@@ -522,7 +537,31 @@ void keyReleased() {
         p.change_x = 0;
     }
 
+}
+boolean isMuteButton(){
+  float leftEdge = view_x+685-(73/1.5)/2-view_x;
+  float rightEdge = view_x+685+(73/1.5)/2-view_x;
+  float upperEdge = view_y+50-(77/1.5)/2-view_y;
+  float bottomEdge = view_y+50+(77/1.5)/2-view_y;
+  
+  if (mouseX >= leftEdge && mouseX <= rightEdge && mouseY >= upperEdge && mouseY <= bottomEdge)return true;
+  return false;
+}
 
+void mousePressed(){
+  if (isMuteButton()){
+     if(bg_sound.isPlaying()){
+        runningBgSound = false;
+        bg_sound.pause();
+        mute.currentImg = muteButtonImgs[0];
+      }else{
+        runningBgSound = true;
+        bg_sound.play();
+        mute.currentImg = muteButtonImgs[1];
+      }
+  }
+}
 
+void mouseReleased(){
 
 }
