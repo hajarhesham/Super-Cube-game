@@ -47,6 +47,7 @@ float view_y;
 int num_coins;
 boolean isGameOver;
 boolean initialized = false;
+int frameCounter;
 
 void setup() {
     size(800, 600);
@@ -57,7 +58,7 @@ void setup() {
     p.setBottom(GROUND_LEVEL);
     p.center_x = 300;
     num_coins = 0;
-
+    frameCounter = 0;
     isGameOver = false;
     platforms = new ArrayList < Sprite > ();
     coins = new ArrayList < Sprite > ();
@@ -66,7 +67,6 @@ void setup() {
     view_x = 0;
     view_y = 0;
     
-    if(initialized == true) gameOver_sound.stop();
     if(CURRENT_SCREEN == 1)
     {
       background = loadImage("background1.png");
@@ -182,6 +182,7 @@ void setup() {
         
         initialized = true;
       }
+      gameOver_sound.stop();
       
       if(!bg_sound.isPlaying() && runningBgSound)
       {
@@ -195,7 +196,7 @@ void setup() {
     
 }
 void draw() {
-  
+    frameCounter++;
     if(CURRENT_SCREEN == 0)
     {
       image(startScreenBG, 400, 300);
@@ -205,14 +206,15 @@ void draw() {
       levelButtons[2].update();
       instructionButton.update();
       
-      if(frameCount % 40 == 0) {
+      //println(frameCounter);
+      if(frameCounter == 40) {
         levelButtons[0].disabled = false;
         levelButtons[1].disabled = false;
         levelButtons[2].disabled = false;
         instructionButton.disabled = false;
       }
-      
     }
+    
     else{
       homeButtons[1]= new Button(homeButtonsImgs[1], view_x+460, view_y+350, 73, 77, 0);
       if(CURRENT_SCREEN == 1)
