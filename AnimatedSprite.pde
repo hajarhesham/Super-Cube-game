@@ -6,7 +6,7 @@
     int direction;
     int index;
     int frame;
-    int count;
+
   
   public AnimatedSprite(PImage img, float scale){
     super(img,scale);
@@ -24,15 +24,16 @@
       
     }
   }
+  
   public void selectDirection(){
-  if(change_x > 0){
-    direction = RIGHT_FACING;
-  }
-   else if(change_x < 0){
-    direction = LEFT_FACING;
-  }
-  else{
-    direction = NEUTRAL_FACING;
+    if(change_x > 0){
+      direction = RIGHT_FACING;
+    }
+     else if(change_x < 0){
+      direction = LEFT_FACING;
+    }
+    else{
+      direction = NEUTRAL_FACING;
   }}
   
  public void selectCurrentImages(){
@@ -45,15 +46,12 @@
   else
     currentImages = standNeutral;
   
-
-  }
+ }
 
   public void advanceToNextImage(){
     index++;
     if(index >= currentImages.length) index=0;
     image = currentImages[index];
   } 
-
-
 
 }
