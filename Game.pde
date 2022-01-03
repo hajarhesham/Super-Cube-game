@@ -182,8 +182,10 @@ public void displayAll() {
     }else{
       homeButtons[1]= new Button(homeButtonsImgs[1], view_x+750, view_y+50, 73/1.5, 77/1.5, 0);
       homeButtons[1].update();
-      if(runningBgSound) mute = new Button(muteButtonImgs[1],view_x+685, view_y+50, 73/1.5, 77/1.5, -1);
-      else mute = new Button(muteButtonImgs[0],view_x+685, view_y+50, 73/1.5, 77/1.5, -1);
+      if(runningBgSound)
+         mute = new Button(muteButtonImgs[1],view_x+685, view_y+50, 73/1.5, 77/1.5, -1);
+      else
+         mute = new Button(muteButtonImgs[0],view_x+685, view_y+50, 73/1.5, 77/1.5, -1);
       mute.update();
     }
     
@@ -242,7 +244,7 @@ void checkDeath() {
                 if (colideEnemy) enemyColl_sound.play();
                 if (fallOffCliff){
                   water_sound.play();
-                  water_sound.amp(3);
+                  water_sound.amp(1);
                 }
                 p.center_x = 100;
             }
@@ -259,7 +261,7 @@ boolean isMuteButton(){
   float rightEdge = view_x+685+(73/1.5)/2-view_x;
   float upperEdge = view_y+50-(77/1.5)/2-view_y;
   float bottomEdge = view_y+50+(77/1.5)/2-view_y;
-  
+  //if (mouseX >= center_x-w/2-view_x && mouseX <= center_x+w/2-view_x && mouseY >= center_y-h/2-view_y && mouseY <= center_y+h/2-view_y) 
   if (mouseX >= leftEdge && mouseX <= rightEdge && mouseY >= upperEdge && mouseY <= bottomEdge) return true;
   return false;
 }
