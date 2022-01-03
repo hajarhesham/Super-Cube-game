@@ -1,7 +1,5 @@
 import gifAnimation.*;
-
 import processing.sound.*;
-
 
 Player p;
 
@@ -41,7 +39,6 @@ ArrayList < Sprite > platforms;
 ArrayList < Sprite > coins;
 ArrayList < Enemy > enemies;
 ArrayList < Sprite > waterWaves;
-
 
 int CURRENT_SCREEN = 0;
 boolean runningBgSound = true;
