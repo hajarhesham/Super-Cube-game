@@ -267,7 +267,9 @@ void keyPressed() {
         p.change_x = -MOVE_SPEED;
     } else if (key == ' ' && isOnPlatform(p, platforms)) {
         p.change_y = -JUMP_SPEED;
-        if(isGameOver == false && CURRENT_SCREEN >=1 && CURRENT_SCREEN <=3) jump_sound.play();
+        
+        if(isGameOver == false && CURRENT_SCREEN >=1 && CURRENT_SCREEN <=3)
+          jump_sound.play();
     }
 }
 
