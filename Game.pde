@@ -7,15 +7,15 @@ void scroll() {
     if (p.getLeft() < left_boundry) {
         view_x -= left_boundry - p.getLeft();
     }
-    float bottom_boundry = view_y + height - VERTICAL_MARGIN;
-    if (p.getBottom() > bottom_boundry) {
-        view_y += p.getBottom() - bottom_boundry;
-    }
-    float top_boundry = view_y + VERTICAL_MARGIN;
-    if (p.getTop() < top_boundry) {
-        view_y -= p.getTop() - top_boundry;
-    }
-    translate(-view_x, -view_y);
+    //float bottom_boundry = view_y + height - VERTICAL_MARGIN;
+    //if (p.getBottom() > bottom_boundry) {
+    //    view_y += p.getBottom() - bottom_boundry;
+    //}
+    //float top_boundry = view_y + VERTICAL_MARGIN;
+    //if (p.getTop() < top_boundry) {
+    //    view_y -= p.getTop() - top_boundry;
+    //}
+    translate(-view_x, 0);
 
 }
 void createPlatforms(String filename) {
@@ -55,28 +55,24 @@ void createPlatforms(String filename) {
                 Water w = new Water (water, SPRITE_SCALE);
                 w.center_x = SPRITE_SIZE / 2 + col * SPRITE_SIZE;
                 w.center_y = SPRITE_SIZE / 2 + row * SPRITE_SIZE+8;
-                waterWaves.add(w);
-                
+                waterWaves.add(w); 
             }
         }
     }
-
 }
+
 public boolean isOnPlatform(Sprite s, ArrayList < Sprite > walls) {
     s.center_y += 5;
     ArrayList < Sprite > col_list = checkCollisionList(s, walls);
     s.center_y -= 5;
-    if (col_list.size() > 0) {
-        return true;
-    } else {
-        return false;
-    }
+    if (col_list.size() > 0)
+      return true;
+    else
+      return false;
 }
-
 
 public void reslovePlatformCollisions(Sprite s, ArrayList < Sprite > walls) {
     s.change_y += GRAVITY;
-
 
     s.center_y += s.change_y;
     ArrayList < Sprite > col_list = checkCollisionList(s, walls);
@@ -98,12 +94,9 @@ public void reslovePlatformCollisions(Sprite s, ArrayList < Sprite > walls) {
         } else if (s.change_x < 0) {
             s.setLeft(collided.getRight());
         }
-
     }
-
-
-
 }
+
 public boolean checkCollision(Sprite s1, Sprite s2) {
     boolean noXoverlap = s1.getRight() <= s2.getLeft() || s1.getLeft() >= s2.getRight();
     boolean noYoverlap = s1.getTop() >= s2.getBottom() || s1.getBottom() <= s2.getTop();
@@ -122,11 +115,10 @@ public ArrayList < Sprite > checkCollisionList(Sprite s, ArrayList < Sprite > li
     }
     return collision_list;
 }
+
+
 //dislay all
-
 public void displayAll() {
-
-    
 
     for (Sprite s: platforms)
         s.display();
