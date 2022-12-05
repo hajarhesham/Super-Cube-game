@@ -4,10 +4,10 @@ Simple 2D platformer game made with [Processing](https://processing.org).
 
 ### Player Should be able to
 
-- Select weither to play in a certein level or start from level 1
+- Select whether to play in a certain level or start from level 1
 - Read game instructions from Game Instructions tab
-- Mute/ Unmute game music and sound effects
-- Player should be able to collect all the coins in order to win and proced to the next level
+- Mute/Unmute game music and sound effects
+- Player should be able to collect all the coins in order to win and proceed to the next level
 - Player have 3 lives in eahc level
 
 ![Screenshot 2022-12-05 074659](https://user-images.githubusercontent.com/52406809/205558868-a310fe23-0979-458d-a9c3-523498e55a70.png)
